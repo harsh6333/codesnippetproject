@@ -76,7 +76,7 @@ router.post("/submit", async (req, res) => {
         }
       );
       // Fetch the result of the submission from Judge0 API
-      const submissionId = submissionResponse.data.token;
+      const submissionId = await submissionResponse.data.token;
       const options = {
         method: "GET",
         url: `https://judge0-ce.p.rapidapi.com/submissions/${submissionId}`,
@@ -91,11 +91,18 @@ router.post("/submit", async (req, res) => {
       };
 
       const response = await axios.request(options);
+      if (!response.data.stdout) {
+        console.error("Received null value for stdout");
+        res
+          .status(500)
+          .json({ error: "Received null value for stdout", submissionId });
+        return;
+      }
       const decodedOutput = Buffer.from(
         response.data.stdout,
         "base64"
       ).toString("utf-8");
-      console.log("Decoded Output:", decodedOutput);
+      // console.log("Decoded Output:", decodedOutput);
 
       // Store the submission details in the MySQL database
       const insertQuery =

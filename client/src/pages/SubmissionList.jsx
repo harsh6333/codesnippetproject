@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/theme-github";
+
+import ace from "ace-builds";
+ace.config.set("basePath", "node_modules/ace-builds/src-noconflict");
 
 function SubmissionList() {
   const [submissions, setSubmissions] = useState([]);
@@ -10,9 +18,8 @@ function SubmissionList() {
     const fetchSubmissions = async () => {
       try {
         const response = await axios.get(
-           `${import.meta.env.VITE_BACKEND_URL}/submissions`
+          `${import.meta.env.VITE_BACKEND_URL}/submissions`
         );
-        console.log(response.data);
         setSubmissions(response.data);
       } catch (error) {
         console.error("Error fetching submissions:", error);

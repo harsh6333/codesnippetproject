@@ -21,14 +21,14 @@ function SubmissionForm() {
       c_cpp: 53,
     }),
     []
-  ); // Empty dependency array to ensure it's only computed once
+  );
 
   const [formData, setFormData] = useState({
     username: "",
     language: "",
     stdin: "",
     code: "",
-    languageId: languageIds.JavaScript, // Default to JavaScript language ID
+    languageId: languageIds.JavaScript,
   });
 
   useEffect(() => {
@@ -43,12 +43,8 @@ function SubmissionForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/submit`,
-        formData
-      );
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/submit`, formData);
       setFormData({
         username: "",
         language: "",
